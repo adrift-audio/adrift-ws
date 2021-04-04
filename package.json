@@ -1,14 +1,28 @@
 {
   "name": "adrift-ws",
   "version": "1.0.0",
-  "description": "Websockets server for the Adrift application",
   "private": "true",
+  "description": "Websockets server for the Adrift project",
+  "author": {
+    "name": "Peter Dyumin",
+    "url": "https://github.com/peterdee"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && node ./build/index.js",
     "lint": "eslint"
   },
-  "author": "",
+  "engines": {
+    "node": "~14.16.1",
+    "npm": "~7.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrift-audio/adrift-ws"
+  },
+  "keywords": [
+    "Adrift"
+  ],
   "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
