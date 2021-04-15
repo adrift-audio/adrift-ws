@@ -20,4 +20,5 @@ export const PORT = Number(process.env.PORT) || 5622;
 
 export const SOCKET_EVENTS = {
   CONNECTION: 'connection',
+  PLAY_NEXT: 'PLAY_NEXT',
 } as const;

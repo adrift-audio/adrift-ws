@@ -2,7 +2,7 @@
   "name": "adrift-ws",
   "version": "1.0.0",
   "description": "Websockets server for the Adrift application",
-  "main": "index.js",
+  "private": "true",
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && node ./build/index.js",
