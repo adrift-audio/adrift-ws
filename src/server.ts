@@ -8,6 +8,7 @@ import {
   SOCKET_EVENTS,
 } from './configuration';
 import log from './utilities/log';
+import router from './router';
 
 const httpServer = createServer();
 const io = new Server(
@@ -20,13 +21,7 @@ const io = new Server(
   },
 );
 
-io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => {
-  log(`connected ${connection.id}`);
-
-  connection.on(SOCKET_EVENTS.PLAY_NEXT, (): void => {
-    log('play next');
-  });
-});
+io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection));
 
 httpServer.listen(
   PORT,
