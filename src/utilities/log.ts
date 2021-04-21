@@ -1,6 +1,8 @@
 /**
  * Show a console log
  * @param {string} value - string value to display
- * @returns {*}
+ * @returns {void}
  */
-export default (value: string): void => console.log(value);
+export default function log(value: string): void {
+  return console.log(value);
+}
