@@ -7,6 +7,7 @@ import {
   PORT,
   SOCKET_EVENTS,
 } from './configuration';
+import { client as redis } from './utilities/redis';
 import log from './utilities/log';
 import router from './router';
 
@@ -22,6 +23,8 @@ const io = new Server(
 );
 
 io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection));
+
+redis.on('connect', () => log('-- redis: connected'));
 
 httpServer.listen(
   PORT,

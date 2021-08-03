@@ -2,6 +2,8 @@
 
 Websockets server for the [Adrift](https://github.com/adrift-audio/adrift-desktop) project
 
+Stack: [Node](https://nodejs.org), [Socket.IO](https://socket.io)
+
 DEV: http://localhost:5622
 
 ### Deploy
@@ -9,7 +11,7 @@ DEV: http://localhost:5622
 ```shell script
 git clone https://github.com/adrift-audio/adrift-ws
 cd ./adrift-ws
-nvm use 14
+nvm use 16
 npm i
 ```
 
@@ -23,6 +25,12 @@ The `.env` file is required, see [.env.example](.env.example) for details
 npm run dev
 ```
 
-### LICENSE
+### Lint
 
-[MIT](LICENSE)
+```shell script
+npm run lint
+```
+
+### License
+
+[MIT](LICENSE.md)
