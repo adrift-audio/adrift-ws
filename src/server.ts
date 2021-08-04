@@ -7,6 +7,7 @@ import {
   PORT,
   SOCKET_EVENTS,
 } from './configuration';
+import authorize from './middlewares/authorize';
 import { client as redis } from './utilities/redis';
 import log from './utilities/log';
 import router from './router';
@@ -16,13 +17,15 @@ const io = new Server(
   httpServer,
   {
     cors: {
-      origin: ALLOWED_ORIGINS,
       credentials: true,
+      origin: ALLOWED_ORIGINS,
     },
   },
 );
 
-io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection));
+io.use((socket, next) => authorize(socket, next));
+
+io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection, io));
 
 redis.on('connect', () => log('-- redis: connected'));
 

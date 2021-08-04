@@ -25,6 +25,7 @@
   "keywords": [
     "Adrift",
     "Node",
+    "Redis",
     "Socket.IO"
   ],
   "license": "MIT",
