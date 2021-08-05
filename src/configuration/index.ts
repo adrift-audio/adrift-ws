@@ -10,7 +10,11 @@ export const ENVS = {
   production: 'production',
 } as const;
 
-export const { ENV = ENVS.development } = environment;
+export const {
+  BACKEND_ENDPOINT = 'http://localhost:5611',
+  ENV = ENVS.development,
+  MICROSERVICES_PASSPHRASE,
+} = environment;
 
 export const CLIENT_TYPES = {
   desktop: 'desktop',
@@ -32,8 +36,16 @@ export const REDIS = {
   TTL_ROOM: 24 * 60 * 60, // 24 hours
 } as const;
 
+export const RESPONSE_MESSAGES = {
+  ACCESS_DENIED: 'ACCESS_DENIED',
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  INVALID_TOKEN: 'INVALID_TOKEN',
+  MISSING_TOKEN: 'MISSING_TOKEN',
+} as const;
+
 export const SOCKET_EVENTS = {
   CONNECTION: 'connection',
+  ERROR: 'ERROR',
   PLAY_NEXT: 'PLAY_NEXT',
   PLAY_PAUSE: 'PLAY_PAUSE',
   PLAY_PREVIOUS: 'PLAY_PREVIOUS',

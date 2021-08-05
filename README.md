@@ -31,6 +31,8 @@ npm run dev
 npm run lint
 ```
 
+Using [ESLint](https://eslint.org)
+
 ### License
 
 [MIT](LICENSE.md)
