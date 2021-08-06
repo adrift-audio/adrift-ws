@@ -3,6 +3,6 @@
  * @param {string} value - string value to display
  * @returns {void}
  */
-export default function Log(value: string): void {
+export default function log(value: string): void {
   return console.log(value);
 }

@@ -30,6 +30,7 @@ export const REDIS = {
   PORT: Number(environment.REDIS_PORT) || 6379,
   PREFIXES: {
     room: 'room',
+    secret: 'secret',
     user: 'user',
   },
   TTL: 8 * 60 * 60, // 8 hours

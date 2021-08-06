@@ -4,13 +4,16 @@ import jwt from 'jsonwebtoken';
 import { Socket } from 'socket.io';
 
 import ErrorResponse from '../utilities/error-response';
-import Log from '../utilities/log';
 import {
   BACKEND_ENDPOINT,
   CLIENT_TYPES,
+  REDIS,
   RESPONSE_MESSAGES,
   SOCKET_EVENTS,
 } from '../configuration';
+import keyFormatter from '../utilities/key-formatter';
+import { RedisClient } from '../utilities/redis';
+import store from '../store';
 
 export default async function Authorize(socket: Socket, next: (error?: ExtendedError) => void) {
   const { handshake: { query: { token: rawToken = '' } = {} } = {} } = socket;
@@ -19,7 +22,7 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
       SOCKET_EVENTS.ERROR,
       ErrorResponse(RESPONSE_MESSAGES.MISSING_TOKEN),
     );
-    return socket.disconnect();
+    return socket.disconnect(true);
   }
 
   const token = String(rawToken);
@@ -31,7 +34,7 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
         SOCKET_EVENTS.ERROR,
         ErrorResponse(RESPONSE_MESSAGES.INVALID_TOKEN),
       );
-      return socket.disconnect();
+      return socket.disconnect(true);
     }
 
     const { client, userId } = decoded;
@@ -40,7 +43,7 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
         SOCKET_EVENTS.ERROR,
         ErrorResponse(RESPONSE_MESSAGES.INVALID_TOKEN),
       );
-      return socket.disconnect();
+      return socket.disconnect(true);
     }
 
     const clientTypes = Object.values(CLIENT_TYPES);
@@ -49,11 +52,23 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
         SOCKET_EVENTS.ERROR,
         ErrorResponse(RESPONSE_MESSAGES.INVALID_TOKEN),
       );
-      return socket.disconnect();
+      return socket.disconnect(true);
     }
 
-    // TODO: load secret from Redis
+    const secretKey = keyFormatter(REDIS.PREFIXES.secret, userId);
+    const redisSecret = await RedisClient.get(secretKey);
+    if (redisSecret) {
+      await jwt.verify(String(token), String(redisSecret));
+      await RedisClient.expire(secretKey, REDIS.TTL);
 
+      store.enterWith({
+        client,
+        socketId: socket.id,
+        userId,
+      });
+
+      return next();
+    }
 
     const response = await axios({
       method: 'GET',
@@ -66,13 +81,23 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
         SOCKET_EVENTS.ERROR,
         ErrorResponse(RESPONSE_MESSAGES.ACCESS_DENIED),
       );
-      return socket.disconnect();
+      return socket.disconnect(true);
     }
 
     await jwt.verify(String(token), secret);
 
+    store.enterWith({
+      client,
+      socketId: socket.id,
+      userId,
+    });
+
     return next();
-  } catch (error) {
-    Log(error);
+  } catch {
+    socket.emit(
+      SOCKET_EVENTS.ERROR,
+      ErrorResponse(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR),
+    );
+    return socket.disconnect(true);
   }
 }

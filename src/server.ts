@@ -23,7 +23,7 @@ const io = new Server(
   },
 );
 
-io.use((socket, next): Promise<any> => authorize(socket, next));
+io.use(authorize);
 
 io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection, io));
 
