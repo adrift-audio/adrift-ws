@@ -14,7 +14,7 @@ const expire: Promise<any> = promisify(client.expire).bind(client);
 const get: Promise<any> = promisify(client.get).bind(client);
 const set: Promise<any> = promisify(client.set).bind(client);
 
-client.on('error', (error: Error): Error => {
+client.on(REDIS.EVENTS.ERROR, (error: Error): Error => {
   throw error;
 });
 

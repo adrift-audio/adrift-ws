@@ -9,8 +9,9 @@ import {
   SOCKET_EVENTS,
 } from './configuration';
 import authorize from './middlewares/authorize';
-import { redisClient } from './utilities/redis';
+import gracefulShutdown from './utilities/graceful-shutdown';
 import log from './utilities/log';
+import { redisClient } from './utilities/redis';
 import router from './router';
 
 const httpServer = createServer();
@@ -29,6 +30,9 @@ io.use(authorize);
 io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection, io));
 
 redisClient.on(REDIS.EVENTS.CONNECT, () => log('-- redis: connected'));
+
+process.on('SIGTERM', (signal: string): Error | void => gracefulShutdown(signal, io, redisClient));
+process.on('SIGINT', (signal: string): Error | void => gracefulShutdown(signal, io, redisClient));
 
 httpServer.listen(
   PORT,
