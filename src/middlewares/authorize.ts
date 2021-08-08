@@ -15,7 +15,9 @@ import keyFormatter from '../utilities/key-formatter';
 import { redisClient } from '../utilities/redis';
 import store from '../store';
 
-export default async function Authorize(socket: Socket, next: (error?: ExtendedError) => void) {
+type Next = (error?: ExtendedError) => void;
+
+export default async function Authorize(socket: Socket, next: Next) {
   const { handshake: { query: { token: rawToken = '' } = {} } = {} } = socket;
   if (!rawToken) {
     socket.emit(
