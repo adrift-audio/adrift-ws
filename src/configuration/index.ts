@@ -25,6 +25,10 @@ export const CLIENT_TYPES = {
 export const PORT = Number(environment.PORT) || 5622;
 
 export const REDIS = {
+  EVENTS: {
+    CONNECT: 'connect',
+    ERROR: 'error',
+  },
   HOST: environment.REDIS_HOST || '',
   PASSWORD: environment.REDIS_PASSWORD || '',
   PORT: Number(environment.REDIS_PORT) || 6379,

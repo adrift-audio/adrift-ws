@@ -12,7 +12,7 @@ import {
   SOCKET_EVENTS,
 } from '../configuration';
 import keyFormatter from '../utilities/key-formatter';
-import { RedisClient } from '../utilities/redis';
+import { redisClient } from '../utilities/redis';
 import store from '../store';
 
 export default async function Authorize(socket: Socket, next: (error?: ExtendedError) => void) {
@@ -56,10 +56,10 @@ export default async function Authorize(socket: Socket, next: (error?: ExtendedE
     }
 
     const secretKey = keyFormatter(REDIS.PREFIXES.secret, userId);
-    const redisSecret = await RedisClient.get(secretKey);
+    const redisSecret = await redisClient.get(secretKey);
     if (redisSecret) {
       await jwt.verify(String(token), String(redisSecret));
-      await RedisClient.expire(secretKey, REDIS.TTL);
+      await redisClient.expire(secretKey, REDIS.TTL);
 
       store.enterWith({
         client,

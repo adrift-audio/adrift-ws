@@ -5,10 +5,11 @@ import {
   ALLOWED_ORIGINS,
   ENV,
   PORT,
+  REDIS,
   SOCKET_EVENTS,
 } from './configuration';
 import authorize from './middlewares/authorize';
-import { RedisClient } from './utilities/redis';
+import { redisClient } from './utilities/redis';
 import log from './utilities/log';
 import router from './router';
 
@@ -27,7 +28,7 @@ io.use(authorize);
 
 io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection, io));
 
-RedisClient.on('connect', () => log('-- redis: connected'));
+redisClient.on(REDIS.EVENTS.CONNECT, () => log('-- redis: connected'));
 
 httpServer.listen(
   PORT,

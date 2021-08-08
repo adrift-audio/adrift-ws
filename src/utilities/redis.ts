@@ -19,7 +19,7 @@ client.on('error', (error: Error): Error => {
 });
 
 export {
-  client as RedisClient,
+  client as redisClient,
   del,
   expire,
   get,
