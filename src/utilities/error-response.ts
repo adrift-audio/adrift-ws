@@ -1,5 +1,3 @@
-export default function ErrorResponse(message: string) {
-  return {
-    message,
-  };
+export default function errorResponse(message: string) {
+  return new Error(message);
 }

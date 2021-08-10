@@ -25,7 +25,7 @@ const io = new Server(
   },
 );
 
-// io.use(authorize);
+io.use(authorize);
 
 io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection));
 

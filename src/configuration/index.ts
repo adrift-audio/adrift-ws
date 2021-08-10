@@ -13,7 +13,7 @@ export const ENVS = {
 export const {
   BACKEND_ENDPOINT = 'http://localhost:5611',
   ENV = ENVS.development,
-  MICROSERVICES_PASSPHRASE,
+  MICROSERVICES_PASSPHRASE = '',
 } = environment;
 
 export const CLIENT_TYPES = {

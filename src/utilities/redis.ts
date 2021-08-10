@@ -1,18 +1,37 @@
 import { promisify } from 'util';
 import redis, { RedisClient } from 'redis';
 
-import { REDIS } from '../configuration';
+import { ENV, ENVS, REDIS } from '../configuration';
 
-const client: RedisClient = redis.createClient({
+interface RedisConfiguration {
+  host: string;
+  password?: string;
+  port: number;
+}
+
+const configuration: RedisConfiguration = {
   host: REDIS.HOST,
-  password: REDIS.PASSWORD,
   port: REDIS.PORT,
-});
+};
 
-const del: Promise<any> = promisify(client.del).bind(client);
-const expire: Promise<any> = promisify(client.expire).bind(client);
-const get: Promise<any> = promisify(client.get).bind(client);
-const set: Promise<any> = promisify(client.set).bind(client);
+if (ENV !== ENVS.development) {
+  configuration.password = REDIS.PASSWORD;
+}
+
+const client: RedisClient = redis.createClient(configuration);
+
+const del: (key: string) => Promise<any> = promisify(client.del).bind(client);
+const expire: (
+  key: string,
+  expiration: number,
+) => Promise<any> = promisify(client.expire).bind(client);
+const get: (key: string) => Promise<any> = promisify(client.get).bind(client);
+const set: (
+  key: string,
+  value: string,
+  type: string,
+  expiration: number,
+) => Promise<any> = promisify(client.set).bind(client);
 
 client.on(REDIS.EVENTS.ERROR, (error: Error): Error => {
   throw error;
