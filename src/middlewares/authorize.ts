@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ExtendedError } from 'socket.io/dist/namespace';
 import jwt from 'jsonwebtoken';
 import { Socket } from 'socket.io';
 
@@ -12,10 +11,9 @@ import {
 } from '../configuration';
 import errorResponse from '../utilities/error-response';
 import { expire, get, set } from '../utilities/redis';
+import { Identifiers, Next } from '../types';
 import keyFormatter from '../utilities/key-formatter';
 import store from '../store';
-
-type Next = (error?: ExtendedError) => void;
 
 export default async function Authorize(socket: Socket, next: Next) {
   const { handshake: { query: { token: rawToken = '' } = {} } = {} } = socket;
@@ -52,7 +50,7 @@ export default async function Authorize(socket: Socket, next: Next) {
         client,
         socketId: socket.id,
         userId,
-      });
+      } as Identifiers);
 
       return next();
     }
@@ -78,7 +76,7 @@ export default async function Authorize(socket: Socket, next: Next) {
       client,
       socketId: socket.id,
       userId,
-    });
+    } as Identifiers);
 
     return next();
   } catch {

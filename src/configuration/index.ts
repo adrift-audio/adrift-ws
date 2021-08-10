@@ -50,6 +50,7 @@ export const RESPONSE_MESSAGES = {
 
 export const SOCKET_EVENTS = {
   CONNECTION: 'connection',
+  DISCONNECT: 'disconnect',
   ERROR: 'ERROR',
   PLAY_NEXT: 'PLAY_NEXT',
   PLAY_PAUSE: 'PLAY_PAUSE',
