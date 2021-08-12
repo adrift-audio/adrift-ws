@@ -1,5 +1,6 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
+import handleDisconnect from '../handlers/disconnect.handler';
 import handlePlayNext from '../handlers/play-next.handler';
 import handlePlayPause from '../handlers/play-pause.handler';
 import handlePlayPrevious from '../handlers/play-previous.handler';
@@ -9,9 +10,11 @@ import log from '../utilities/log';
 import { SOCKET_EVENTS } from '../configuration';
 import store from '../store';
 
-export default function router(socket: Socket): void {
+export default async function router(io: Server, socket: Socket): Promise<void> {
   const identifiers = store.getStore() as Identifiers;
   log(` -> connected ${identifiers.userId} [${identifiers.client.toUpperCase()}]`);
+
+  await socket.join(identifiers.userId);
 
   socket.on(SOCKET_EVENTS.PLAY_NEXT, () => handlePlayNext(socket));
   socket.on(SOCKET_EVENTS.PLAY_PAUSE, () => handlePlayPause(socket));
@@ -20,8 +23,6 @@ export default function router(socket: Socket): void {
 
   socket.on(
     SOCKET_EVENTS.DISCONNECT,
-    (reason) => log(` -> disconnected ${identifiers.userId} [${
-      identifiers.client.toUpperCase()
-    }] (${reason})`),
+    (reason: string): Promise<void> => handleDisconnect(reason, socket, io, identifiers),
   );
 }

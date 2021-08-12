@@ -50,6 +50,7 @@ export const RESPONSE_MESSAGES = {
 } as const;
 
 export const SOCKET_EVENTS = {
+  CLIENT_DISCONNECTED: 'CLIENT_DISCONNECTED',
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
   ERROR: 'ERROR',

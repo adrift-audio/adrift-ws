@@ -31,9 +31,7 @@ export default async function roomAccess(io: any, next: Next): Promise<void> {
     }
 
     const connectedSocketIds = [...await io.allSockets()];
-    console.log('connected', connectedSocketIds);
     const actualizedRoom = roomService(connectedSocketIds, room);
-    console.log(actualizedRoom);
 
     if (identifiers.client === CLIENT_TYPES.web) {
       actualizedRoom.push(identifiers);
@@ -63,7 +61,6 @@ export default async function roomAccess(io: any, next: Next): Promise<void> {
 
     return next();
   } catch (error) {
-    console.log('err', error);
     return next(errorResponse(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR));
   }
 }

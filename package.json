@@ -26,7 +26,8 @@
     "Adrift",
     "Node",
     "Redis",
-    "Socket.IO"
+    "Socket.IO",
+    "Typescript"
   ],
   "license": "MIT",
   "dependencies": {

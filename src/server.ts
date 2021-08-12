@@ -30,7 +30,7 @@ const io = new Server(
 io.use(authorize);
 io.use((_: Socket, next: Next): Promise<void> => roomAccess(io, next));
 
-io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): void => router(connection));
+io.on(SOCKET_EVENTS.CONNECTION, (connection: Socket): Promise<void> => router(io, connection));
 
 redisClient.on(REDIS.EVENTS.CONNECT, () => log('-- redis: connected'));
 

@@ -2,7 +2,7 @@
 
 Websockets server for the [Adrift](https://github.com/adrift-audio/adrift-desktop) project
 
-Stack: [Node](https://nodejs.org), [Socket.IO](https://socket.io), [Redis](https://www.npmjs.com/package/redis)
+Stack: [Node](https://nodejs.org), [Socket.IO](https://socket.io), [Redis](https://www.npmjs.com/package/redis), [Typescript](https://www.typescriptlang.org)
 
 DEV: http://localhost:5622
 
