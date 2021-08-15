@@ -15,14 +15,13 @@ export default function gracefulShutdown(
       throw error;
     }
 
-    return log('-- io: stopped the server');
-  });
+    log('-- io: stopped the server');
+    redisClient.quit((e: Error): Error | void => {
+      if (e) {
+        throw e;
+      }
 
-  redisClient.quit((error: Error): Error | void => {
-    if (error) {
-      throw error;
-    }
-
-    return log('-- redis: connection closed');
+      return log('-- redis: connection closed');
+    });
   });
 }

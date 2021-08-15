@@ -1,6 +1,10 @@
 import { Server, Socket } from 'socket.io';
 
-import { del, get, set } from '../utilities/redis';
+import {
+  del,
+  get,
+  set,
+} from '../utilities/redis';
 import { Identifiers } from '../types';
 import keyFormatter from '../utilities/key-formatter';
 import log from '../utilities/log';
@@ -14,7 +18,7 @@ export default async function handleDisconnect(
   identifiers: Identifiers,
 ): Promise<void> {
   const redisKey = keyFormatter(REDIS.PREFIXES.room, identifiers.userId);
-
+  console.log('before');
   try {
     socket.to(identifiers.userId).emit(
       SOCKET_EVENTS.CLIENT_DISCONNECTED,
@@ -23,6 +27,7 @@ export default async function handleDisconnect(
       },
     );
 
+    console.log('after');
     const redisRoom = await get(redisKey);
     if (!redisRoom) {
       return null;

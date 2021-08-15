@@ -16,7 +16,7 @@ import keyFormatter from '../utilities/key-formatter';
 import store from '../store';
 
 export default async function Authorize(socket: Socket, next: Next) {
-  const { handshake: { query: { token: rawToken = '' } = {} } = {} } = socket;
+  const { handshake: { auth: { token: rawToken = '' } = {} } = {} } = socket;
   if (!rawToken) {
     return next(errorResponse(RESPONSE_MESSAGES.MISSING_TOKEN));
   }
