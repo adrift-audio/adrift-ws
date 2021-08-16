@@ -1,7 +1,15 @@
 import { Socket } from 'socket.io';
-import { SOCKET_EVENTS } from '../configuration';
 
-export default (socket: Socket) => socket.broadcast.emit(
+import { CLIENT_TYPES, SOCKET_EVENTS } from '../configuration';
+import { Identifiers } from '../types';
+
+export default (
+  socket: Socket,
+  identifiers: Identifiers,
+): boolean => socket.to(identifiers.userId).emit(
   SOCKET_EVENTS.PLAY_NEXT,
-  // TODO: pass a custom object with data (target, issuer)
+  {
+    issuer: identifiers.client,
+    target: CLIENT_TYPES.desktop,
+  },
 );
