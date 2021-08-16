@@ -10,18 +10,20 @@ export default function gracefulShutdown(
 ): Error | void {
   log(`-- shutting down the server: ${signal}`);
 
-  io.close((error: Error): Error | void => {
-    if (error) {
-      throw error;
+  io.close((socketError: Error): Error | void => {
+    if (socketError) {
+      throw socketError;
     }
 
     log('-- io: stopped the server');
-    redisClient.quit((e: Error): Error | void => {
-      if (e) {
-        throw e;
+
+    redisClient.quit((redisError: Error): Error | void => {
+      if (redisError) {
+        throw redisError;
       }
 
-      return log('-- redis: connection closed');
+      log('-- redis: connection closed');
+      return process.exit(0);
     });
   });
 }
