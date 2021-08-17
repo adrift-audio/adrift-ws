@@ -1,17 +1,13 @@
 import { Server, Socket } from 'socket.io';
 
-import {
-  del,
-  get,
-  set,
-} from '../utilities/redis';
+import { del, get, set } from '../utilities/redis';
 import { Identifiers } from '../types';
 import keyFormatter from '../utilities/key-formatter';
 import log from '../utilities/log';
 import { REDIS, SOCKET_EVENTS } from '../configuration';
 import roomService from '../utilities/room-service';
 
-export default async function handleDisconnect(
+export default async function disconnect(
   reason: string,
   socket: Socket,
   io: Server,

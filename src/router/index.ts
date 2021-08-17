@@ -2,7 +2,6 @@ import { Server, Socket } from 'socket.io';
 
 import handleDisconnect from '../handlers/disconnect.handler';
 import handlePlayNext from '../handlers/play-next.handler';
-import handlePlayPause from '../handlers/play-pause.handler';
 import handlePlayPrevious from '../handlers/play-previous.handler';
 import * as handlerTypes from '../handlers/types';
 import handleSwitchTrack from '../handlers/switch-track.handler';
@@ -18,8 +17,7 @@ export default async function router(io: Server, socket: Socket): Promise<void> 
   await socket.join(identifiers.userId);
 
   socket.on(SOCKET_EVENTS.PLAY_NEXT, (): boolean => handlePlayNext(socket, identifiers));
-  socket.on(SOCKET_EVENTS.PLAY_PAUSE, () => handlePlayPause(socket));
-  socket.on(SOCKET_EVENTS.PLAY_PREVIOUS, () => handlePlayPrevious(socket));
+  socket.on(SOCKET_EVENTS.PLAY_PREVIOUS, (): boolean => handlePlayPrevious(socket, identifiers));
   socket.on(
     SOCKET_EVENTS.SWITCH_TRACK,
     (data: handlerTypes.SwitchTrackData): boolean => handleSwitchTrack(socket, data, identifiers),
