@@ -1,14 +1,19 @@
 import { ClientTypes, Track } from '../types';
 
-export interface AvailablePlaylistPayload {
+export interface DefaultPayload {
   issuer: ClientTypes;
-  playlist: Track[];
   target: ClientTypes;
 }
 
-export interface SwitchTrackPayload {
-  issuer: ClientTypes;
+export interface AvailablePlaylistPayload extends DefaultPayload {
+  playlist: Track[];
+}
+
+export interface PlayNextPayload extends DefaultPayload {
+  id: string;
+}
+
+export interface SwitchTrackPayload extends DefaultPayload {
   link: string;
-  target: ClientTypes;
   track: Track;
 }

@@ -7,6 +7,7 @@ import handlePlayPrevious from '../handlers/play-previous.handler';
 import * as handlerTypes from '../handlers/types';
 import handleSwitchTrack from '../handlers/switch-track.handler';
 import { Identifiers } from '../types';
+import notifyRoom from '../utilities/notify-room';
 import log from '../utilities/log';
 import { SOCKET_EVENTS } from '../configuration';
 import store from '../store';
@@ -16,6 +17,7 @@ export default async function router(io: Server, socket: Socket): Promise<void> 
   log(` -> connected ${identifiers.userId} [${identifiers.client.toUpperCase()}]`);
 
   await socket.join(identifiers.userId);
+  notifyRoom(socket, identifiers);
 
   socket.on(
     SOCKET_EVENTS.AVAILABLE_PLAYLIST,
@@ -25,7 +27,14 @@ export default async function router(io: Server, socket: Socket): Promise<void> 
       payload,
     ),
   );
-  socket.on(SOCKET_EVENTS.PLAY_NEXT, (): boolean => handlePlayNext(socket, identifiers));
+  socket.on(
+    SOCKET_EVENTS.PLAY_NEXT,
+    (payload: handlerTypes.PlayNextPayload): boolean => handlePlayNext(
+      socket,
+      identifiers,
+      payload,
+    ),
+  );
   socket.on(SOCKET_EVENTS.PLAY_PREVIOUS, (): boolean => handlePlayPrevious(socket, identifiers));
   socket.on(
     SOCKET_EVENTS.SWITCH_TRACK,
