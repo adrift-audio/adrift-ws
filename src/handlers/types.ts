@@ -1,12 +1,14 @@
-export interface Track {
-  added: number;
-  name: string;
-  path: string;
-  size: number;
-  type: string;
+import { ClientTypes, Track } from '../types';
+
+export interface AvailablePlaylistPayload {
+  issuer: ClientTypes;
+  playlist: Track[];
+  target: ClientTypes;
 }
 
-export interface SwitchTrackData {
+export interface SwitchTrackPayload {
+  issuer: ClientTypes;
   link: string;
+  target: ClientTypes;
   track: Track;
 }

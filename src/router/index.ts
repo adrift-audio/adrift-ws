@@ -1,5 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
+import handleAvailablePlaylist from '../handlers/available-playlist.handler';
 import handleDisconnect from '../handlers/disconnect.handler';
 import handlePlayNext from '../handlers/play-next.handler';
 import handlePlayPrevious from '../handlers/play-previous.handler';
@@ -16,11 +17,23 @@ export default async function router(io: Server, socket: Socket): Promise<void> 
 
   await socket.join(identifiers.userId);
 
+  socket.on(
+    SOCKET_EVENTS.AVAILABLE_PLAYLIST,
+    (payload: handlerTypes.AvailablePlaylistPayload): boolean => handleAvailablePlaylist(
+      socket,
+      identifiers,
+      payload,
+    ),
+  );
   socket.on(SOCKET_EVENTS.PLAY_NEXT, (): boolean => handlePlayNext(socket, identifiers));
   socket.on(SOCKET_EVENTS.PLAY_PREVIOUS, (): boolean => handlePlayPrevious(socket, identifiers));
   socket.on(
     SOCKET_EVENTS.SWITCH_TRACK,
-    (data: handlerTypes.SwitchTrackData): boolean => handleSwitchTrack(socket, data, identifiers),
+    (payload: handlerTypes.SwitchTrackPayload): boolean => handleSwitchTrack(
+      socket,
+      identifiers,
+      payload,
+    ),
   );
 
   socket.on(
