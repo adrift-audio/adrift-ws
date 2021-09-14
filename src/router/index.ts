@@ -2,7 +2,9 @@ import { Server, Socket } from 'socket.io';
 
 import handleAvailablePlaylist from '../handlers/available-playlist.handler';
 import handleDisconnect from '../handlers/disconnect.handler';
+import handleError from '../handlers/error.handler';
 import handlePlayNext from '../handlers/play-next.handler';
+import handleRemoveAll from '../handlers/remove-all.handler';
 import * as handlerTypes from '../handlers/types';
 import handleSwitchTrack from '../handlers/switch-track.handler';
 import { Identifiers } from '../types';
@@ -27,8 +29,24 @@ export default async function router(io: Server, socket: Socket): Promise<void> 
     ),
   );
   socket.on(
+    SOCKET_EVENTS.ERROR,
+    (payload: handlerTypes.ErrorPayload): boolean => handleError(
+      socket,
+      identifiers,
+      payload,
+    ),
+  );
+  socket.on(
     SOCKET_EVENTS.PLAY_NEXT,
     (payload: handlerTypes.PlayNextPayload): boolean => handlePlayNext(
+      socket,
+      identifiers,
+      payload,
+    ),
+  );
+  socket.on(
+    SOCKET_EVENTS.REMOVE_ALL,
+    (payload: handlerTypes.RemoveAllPayload): void => handleRemoveAll(
       socket,
       identifiers,
       payload,

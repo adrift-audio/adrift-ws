@@ -58,6 +58,7 @@ export const SOCKET_EVENTS = {
   DISCONNECT: 'disconnect',
   ERROR: 'ERROR',
   PLAY_NEXT: 'PLAY_NEXT',
+  REMOVE_ALL: 'REMOVE_ALL',
   REMOVE_FILE: 'REMOVE_FILE',
   SWITCH_TRACK: 'SWITCH_TRACK',
 } as const;
