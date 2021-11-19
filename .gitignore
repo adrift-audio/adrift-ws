@@ -4,3 +4,6 @@
 
 # Files
 .env
+
+# Misc
+.DS_Store

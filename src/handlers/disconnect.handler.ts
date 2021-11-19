@@ -46,7 +46,7 @@ export default async function disconnect(
 
     return log(` -> disconnected ${identifiers.userId} [${
       identifiers.client.toUpperCase()
-    }] (${reason})`);
+    }] (${reason})`, true);
   } catch (error) {
     log(error);
     return del(redisKey);

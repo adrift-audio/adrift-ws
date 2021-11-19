@@ -1,7 +1,7 @@
 /**
  * Launch the server and load the environment variables if necessary
  */
-(function Launch(): Promise<any> {
+(function Launch(): any {
   const { env: { ENV = '' } = {} } = process;
 
   if (ENV && ENV === 'heroku') {

@@ -15,7 +15,7 @@ import store from '../store';
 
 export default async function router(io: Server, socket: Socket): Promise<void> {
   const identifiers = store.getStore() as Identifiers;
-  log(` -> connected ${identifiers.userId} [${identifiers.client.toUpperCase()}]`);
+  log(` -> connected ${identifiers.userId} [${identifiers.client.toUpperCase()}]`, true);
 
   await socket.join(identifiers.userId);
   notifyRoom(socket, identifiers);
